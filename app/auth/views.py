@@ -42,10 +42,11 @@ def check_token(username, token):
 
 def is_login(username):
     try:
-        if db.select_online_user_by_username(username) is None:
+        res = db.select_online_user_by_username(username)
+        if res is None:
             return False
         else:
-            return True
+            return res
     except Exception:
         return False
 
@@ -56,17 +57,22 @@ def login():
         username = str(request.form.get('username'))
         password = str(request.form.get('password'))
         role = str(request.form.get('role'))
-
+        # 身份验证
         check_result = check_user(username, password, role)
         if check_result is False:
-            return jsonify({"msg": "登录失败"}), 400
-        if is_login(username):
-            return jsonify({"msg": "用户已登录"}), 400
-        # 生成token
-        token = ''.join(random.sample(string.ascii_letters + string.digits, 32))
-        # 记录在线状态
-        db.add_online_user(username, token)
-        return jsonify({"msg": "登录成功", "name": check_result, "token": token, "role": role}), 200
+            return jsonify({"msg": "用户名或密码错误"}), 400
+
+        check_is_login = is_login(username)
+        if check_is_login is False:
+            # 生成token
+            token = ''.join(random.sample(string.ascii_letters + string.digits, 32))
+            # 记录在线状态
+            db.add_online_user(username, token)
+            login_msg = "登录成功"
+        else:
+            token = check_is_login
+            login_msg = "已经登录"
+        return jsonify({"msg": login_msg, "name": check_result, "token": token, "role": role}), 200
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
 
