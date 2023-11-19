@@ -29,7 +29,7 @@ def get_posts():
     if request.method == 'POST':
         try:
             data = request.get_json()
-            post_title = data['post_title']
+            post_title = str(data['post_title'])
             post_dict = db.select_posts()
             for post_id in range(len(post_dict)):
                 if post_dict[str(post_id + 1)]['title'] == post_title:

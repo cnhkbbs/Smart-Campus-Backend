@@ -24,8 +24,11 @@ def check_token(username, token):
 def get_courses():
     if request.method == 'POST':
         data = request.get_json()
-        username = data['username']
-        token = data['token']
+        try:
+            username = str(data['username'])
+            token = str(data['token'])
+        except KeyError:
+            return jsonify({'msg': '请求参数错误'}), 400
         if check_token(username, token):
             try:
                 course = db.select_courses(username)

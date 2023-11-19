@@ -33,8 +33,11 @@ def is_teacher(username):
 def get_students():
     if request.method == 'POST':
         data = request.get_json()
-        username = data['username']
-        token = data['token']
+        try:
+            username = str(data['username'])
+            token = str(data['token'])
+        except KeyError:
+            return jsonify({"msg": "请求参数错误"}), 400
         if check_token(username, token):
             if not is_teacher(username):
                 return jsonify({"msg": "用户校验失败"})

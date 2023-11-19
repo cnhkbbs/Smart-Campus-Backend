@@ -33,9 +33,12 @@ def is_teacher(username):
 def get_grades():
     if request.method == 'POST':
         data = request.get_json()
-        username = data['username']
-        token = data['token']
-        role = data['role']
+        try:
+            username = str(data['username'])
+            token = str(data['token'])
+            role = str(data['role'])
+        except KeyError:
+            return jsonify({"msg": "请求参数错误"}), 400
         if check_token(username, token):
             if role == '1':
                 try:
@@ -47,7 +50,10 @@ def get_grades():
             else:
                 try:
                     if is_teacher(username):
-                        student_id = data['student_id']
+                        try:
+                            student_id = data['student_id']
+                        except KeyError:
+                            return jsonify({"msg": "请求参数错误"}), 400
                         grade = db.select_grades(student_id)
                         return jsonify({"grades": grade}), 200
                     else:
