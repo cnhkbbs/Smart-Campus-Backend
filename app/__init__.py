@@ -23,6 +23,10 @@ from .members import members as members_blueprint
 
 app.register_blueprint(members_blueprint)
 
+from .feedback import feedback as feedback_blueprint
+
+app.register_blueprint(feedback_blueprint)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
