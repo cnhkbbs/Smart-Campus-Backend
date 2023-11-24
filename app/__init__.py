@@ -27,7 +27,16 @@ from .feedback import feedback as feedback_blueprint
 
 app.register_blueprint(feedback_blueprint)
 
+from .message import message as message_blueprint
+
+app.register_blueprint(message_blueprint)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return 'Hi'
+
+
+@app.route('/notice', methods=['GET', 'POST'])
+def notice():
+    return '当前服务器为演示模式，所有内容会定期重置。'

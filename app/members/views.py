@@ -50,3 +50,26 @@ def get_students():
             return jsonify({"msg": "用户校验失败"})
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
+
+
+@members.route('/user_info', methods=['GET', 'POST'])
+def get_userinfo():
+    if request.method == 'POST':
+        data = request.get_json()
+        try:
+            username = str(data['username'])
+            token = str(data['token'])
+            role = str(data['role'])
+        except KeyError:
+            return jsonify({"msg": "请求参数错误"}), 400
+        if check_token(username, token):
+            if role == '1':
+                res = db.select_by_primary_key('students', username)
+            else:
+                res = db.select_by_primary_key('teachers', username)
+            del res['pwd']
+            return jsonify(res)
+        else:
+            return jsonify({"msg": "用户校验失败"})
+    else:
+        return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
