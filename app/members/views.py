@@ -70,6 +70,6 @@ def get_userinfo():
             del res['pwd']
             return jsonify(res)
         else:
-            return jsonify({"msg": "用户校验失败"})
+            return jsonify({"msg": "用户校验失败"}),400
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
