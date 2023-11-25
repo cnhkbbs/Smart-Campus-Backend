@@ -32,6 +32,6 @@ def get_message():
         if check_token(username, token):
             return jsonify({'msg': '暂无消息', 'count': 0})
         else:
-            return jsonify({"msg": "用户校验失败"})
+            return jsonify({"msg": "用户校验失败"}), 400
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
