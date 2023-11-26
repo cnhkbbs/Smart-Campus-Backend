@@ -67,7 +67,6 @@ def get_userinfo():
                 res = db.select_by_primary_key('students', username)
             else:
                 res = db.select_by_primary_key('teachers', username)
-            del res['pwd']
             return jsonify(res)
         else:
             return jsonify({"msg": "用户校验失败"}),400

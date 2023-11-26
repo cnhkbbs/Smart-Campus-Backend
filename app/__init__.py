@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-
 app = Flask(__name__)
 
 # 注册蓝图
@@ -39,7 +38,7 @@ def index():
 
 @app.route('/notice', methods=['GET', 'POST'])
 def notice():
-    return '当前服务器为演示模式，所有内容会定期重置。'
+    return '当前服务器为预览模式，所有内容会定期重置。'
 
 
 @app.route('/visitor_registration', methods=['GET', 'POST'])
