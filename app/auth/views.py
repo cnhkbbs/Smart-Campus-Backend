@@ -71,7 +71,7 @@ def login():
             login_msg = "登录成功"
         else:
             token = check_is_login
-            login_msg = "已经登录"
+            login_msg = "登录成功"
         return jsonify({"msg": login_msg, "name": check_result, "token": token, "role": role}), 200
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
