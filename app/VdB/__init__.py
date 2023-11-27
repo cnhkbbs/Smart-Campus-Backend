@@ -68,7 +68,6 @@ class VdB:
                 pass
             else:
                 virtual_database.Online_Users = self.get_cache()
-            print(f'online users: {virtual_database.Online_Users}')
             return virtual_database.Online_Users[username]
         except Exception:
             return None
