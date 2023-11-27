@@ -47,7 +47,7 @@ def get_students():
                 students_name_dict.setdefault(key, value['name'])
             return jsonify(students_name_dict)
         else:
-            return jsonify({"msg": "用户校验失败"})
+            return jsonify({"msg": "用户校验失败"}), 400
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
 
