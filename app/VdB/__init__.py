@@ -54,20 +54,14 @@ class VdB:
     # 在线用户记录操作
     def add_online_user(self, username, token):
         virtual_database.Online_Users.setdefault(username, token)
-        self.update_cache(virtual_database.Online_Users)
         print(f'online users: {virtual_database.Online_Users}')
 
     def delete_online_user(self, username):
         del virtual_database.Online_Users[username]
-        self.update_cache(virtual_database.Online_Users)
         print(f'online users: {virtual_database.Online_Users}')
 
     def select_online_user_by_username(self, username):
         try:
-            if self.get_cache() is None:
-                pass
-            else:
-                virtual_database.Online_Users = self.get_cache()
             return virtual_database.Online_Users[username]
         except Exception:
             return None
@@ -83,25 +77,3 @@ class VdB:
     # 课程表查询
     def select_courses(self, username):
         return virtual_database.Courses[username]
-
-    # 系统缓存操作
-    def update_cache(self, users_dict, cache_key='online_users', cache_duration_hours=24):
-        users_json = json.dumps(users_dict)
-        os.environ[cache_key] = users_json
-        cache_expiry_time = datetime.now() + timedelta(hours=cache_duration_hours)
-        os.environ[cache_key + "_ttl"] = cache_expiry_time.isoformat()
-
-    def get_cache(self, cache_key='online_users'):
-        if cache_key not in os.environ:
-            return None
-        ttl_key = cache_key + "_ttl"
-        if ttl_key not in os.environ:
-            return None
-        cache_expiry_time_str = os.environ[ttl_key]
-        cache_expiry_time = datetime.fromisoformat(cache_expiry_time_str)
-        current_time = datetime.now()
-        if current_time > cache_expiry_time:
-            return None
-        users_json = os.environ[cache_key]
-        users_dict = json.loads(users_json)
-        return users_dict
