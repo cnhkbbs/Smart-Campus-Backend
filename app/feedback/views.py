@@ -32,8 +32,8 @@ def get_students():
         except KeyError:
             return jsonify({"msg": "请求参数错误"}), 400
         if check_token(username, token):
-            return jsonify({"msg": "提交成功"})
+            return jsonify({"msg": "提交成功"}), 200
         else:
-            return jsonify({"msg": "用户校验失败"})
+            return jsonify({"msg": "用户校验失败"}), 400
     else:
         return jsonify({"msg": "请求方式错误,请使用post请求"}), 400
